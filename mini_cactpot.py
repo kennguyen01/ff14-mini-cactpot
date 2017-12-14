@@ -134,7 +134,7 @@ def recommendation(user_payout):
     return string
 
 
-def main():
+def cactpot():
     print(Color.BOLD + 'Welcome to FFXIV Mini Cactpot Solver!\n' + Color.END)
     while True:
         start = input('Start (yes/no): ').lower()
@@ -165,4 +165,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    cactpot()
