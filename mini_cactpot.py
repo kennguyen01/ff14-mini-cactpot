@@ -109,16 +109,13 @@ def lines_payout(combinations):
     payout = {6: 10000, 7: 36, 8: 720, 9: 360, 10: 80, 11: 252, 12: 108,
               13: 72, 14: 54, 15: 180, 16: 72, 17: 180, 18: 119,
               19: 36, 20: 306, 21: 1080, 22: 144, 23: 1800, 24: 3600}
-
     # Sum of each combination in list
     sum_payout = dict()
     for line in combinations:
         sum_payout[line] = [sum(combo) for combo in combinations[line]]
-
     # Replace the sum with its payout and find the integer average for each line
     for line in sum_payout:
         sum_payout[line] = sum([payout[value] for value in sum_payout[line]])//len(sum_payout[line])
-
     return sum_payout
 
 
