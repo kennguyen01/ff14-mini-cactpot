@@ -1,4 +1,3 @@
-import itertools
 
 
 # Text decoration
@@ -14,12 +13,14 @@ def current_board(positions):
     :param positions: dictionary
     :return: string containing integer
     """
-    print('--------------')
+    line_0 = '--------------\n'
     line_1 = Color.BOLD + '{}  {}  {}  {}  {}\n'.format('4', '5', '6', '7', '8') + Color.END
     line_2 = Color.BOLD + '3' + Color.END + '  {}  {}  {}\n'.format(positions['a'], positions['b'], positions['c'])
     line_3 = Color.BOLD + '2' + Color.END + '  {}  {}  {}\n'.format(positions['d'], positions['e'], positions['f'])
     line_4 = Color.BOLD + '1' + Color.END + '  {}  {}  {}\n'.format(positions['g'], positions['h'], positions['i'])
-    return line_1 + line_2 + line_3 + line_4
+    line_5 = '--------------\n'
+    board_display = line_0 + line_1 + line_2 + line_3 + line_4 + line_5
+    return board_display
 
 
 def user_numbers():
@@ -70,6 +71,31 @@ def board_lines(positions):
     return lines
 
 
+def combinations(iterable, r):
+    """
+    Return combinations of elements for iterable of length r
+    :param iterable: object with index starting at zero
+    :param r: length of elements sequences
+    :return: tuple of r length with no repeated elements
+    """
+    pool = tuple(iterable)
+    n = len(pool)
+    if r > n:
+        return
+    indices = list(range(r))
+    yield tuple(pool[i] for i in indices)
+    while True:
+        for i in reversed(range(r)):
+            if indices[i] != i + n - r:
+                break
+        else:
+            return
+        indices[i] += 1
+        for j in range(i+1, r):
+            indices[j] = indices[j-1] + 1
+        yield tuple(pool[i] for i in indices)
+        
+
 def combination_letters(list_1, list_2):
     """
     Find possible combinations between two lists by replacing string
@@ -80,7 +106,7 @@ def combination_letters(list_1, list_2):
     """
     list_1 = list(list_1)
     indices = [i for i, x in enumerate(list_1) if isinstance(x, str)]
-    for combo in itertools.combinations(list_2, r=len(indices)):
+    for combo in combinations(list_2, len(indices)):
         for index, char in zip(indices, combo):
             list_1[index] = char
         yield tuple(list_1)
