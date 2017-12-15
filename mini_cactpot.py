@@ -4,12 +4,13 @@ This program is written for the Mini Cactpot minigame in Final Fantasy 14 MMORPG
 The game consists of a 3x3 scratch off ticket with 1 number given to the user. User can pick 3 additional numbers to
 fill in the matrix. For example:
 
-1 | 3 | x
-x | 9 | x
-x | x | 7
+4   5   6   7  8
+3 | 1 | 3 | x
+2 | x | 9 | x
+1 | x | x | 7
 
-Then user has to pick a 3-number lines. There are 3 rows, 3 columns, and 2 diagonals, making a total of 8 lines. The
-payout for the game depends on the sum of numbers for that line.
+Then user has to pick a 3-number lines. There are 3 rows, 3 columns, and 2 diagonals, making a total of 8 lines.
+Indcated by number 1-8 on the outside of the board. The payout for the game depends on the sum of numbers for that line.
 
 This program calculates the average of all possible payout for each of those lines.
 """
