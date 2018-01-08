@@ -51,20 +51,20 @@ class Game:
         """
         Return dictionary of 4 key-value pairs of letter positions and user's numbers.
         """
-        user_inputs = dict()
-        for counter in range(1, 5):
-            letter, number = input('Number {}: '.format(counter)).split()
-            user_inputs[letter] = int(number)
+        user_inputs = {}
+        for i in range(1, 5):
+            c, n = input('Number {}: '.format(i)).split()
+            user_inputs[c] = int(n)
         return user_inputs
 
-    def fill_numbers(self, numbers):
+    def fill_numbers(self, num):
         """
         Fill in numbers to ticket from dictionary of user's inputs
         """
-        for key, value in numbers.items():
-            for letter in self.ticket:
-                if letter == key:
-                    self.ticket[letter] = value
+        for k, v in num.items():
+            for c in self.ticket:
+                if c == k:
+                    self.ticket[c] = v
         return self.ticket
 
 
@@ -80,15 +80,16 @@ class Calculate:
         """
         Return each line's positions on ticket
         """
-        ticket_lines = dict()
-        ticket_lines[1] = [self.positions['g'], self.positions['h'], self.positions['i']]
-        ticket_lines[2] = [self.positions['d'], self.positions['e'], self.positions['f']]
-        ticket_lines[3] = [self.positions['a'], self.positions['b'], self.positions['c']]
-        ticket_lines[4] = [self.positions['a'], self.positions['e'], self.positions['i']]
-        ticket_lines[5] = [self.positions['a'], self.positions['d'], self.positions['g']]
-        ticket_lines[6] = [self.positions['b'], self.positions['e'], self.positions['h']]
-        ticket_lines[7] = [self.positions['c'], self.positions['f'], self.positions['i']]
-        ticket_lines[8] = [self.positions['c'], self.positions['e'], self.positions['g']]
+        ticket_lines = {
+            1: [self.positions['g'], self.positions['h'], self.positions['i']],
+            2: [self.positions['d'], self.positions['e'], self.positions['f']],
+            3: [self.positions['a'], self.positions['b'], self.positions['c']],
+            4: [self.positions['a'], self.positions['e'], self.positions['i']],
+            5: [self.positions['a'], self.positions['d'], self.positions['g']],
+            6: [self.positions['b'], self.positions['e'], self.positions['h']],
+            7: [self.positions['c'], self.positions['f'], self.positions['i']],
+            8: [self.positions['c'], self.positions['e'], self.positions['g']]
+        }
         return ticket_lines
 
     @classmethod
@@ -113,29 +114,29 @@ class Calculate:
                 indices[j] = indices[j-1] + 1
             yield tuple(pool[i] for i in indices)
 
-    def lists_combinations(self, list_1, list_2):
+    def lists_combinations(self, l1, l2):
         """
         Find possible combinations of lines by replacing string with integer.
         """
-        indices = [i for i, x in enumerate(list_1) if isinstance(x, str)]
+        indices = [i for i, j in enumerate(l1) if isinstance(j, str)]
 
-        # Find all indices of letters in list_1 and replace them with outputs from list_2's combinations
-        for combo in self.combinations(list_2, len(indices)):
+        # Find all indices of letters in list 1 and replace them with outputs from list 2's combinations
+        for combo in self.combinations(l2, len(indices)):
             for index, char in zip(indices, combo):
                 list_1[index] = char
-            yield tuple(list_1)
+            yield tuple(l2)
 
     def lines_combinations(self, num_lines, num_list):
         """
         Return dictionary of lists for all combinations for each line
         """
-        lines_combo = dict()
+        lines_combo = {}
         for line in num_lines:
             lines_combo[line] = list(self.lists_combinations(num_lines[line], num_list))
         return lines_combo
 
     @classmethod
-    def lines_payout(cls, combinations):
+    def lines_payout(cls, comb):
         """
         Return average of potential payout for each line
         """
@@ -145,8 +146,8 @@ class Calculate:
 
         # Sum of each combination in list
         sum_payout = dict()
-        for line in combinations:
-            sum_payout[line] = [sum(combo) for combo in combinations[line]]
+        for line in comb:
+            sum_payout[line] = [sum(combo) for combo in comb[line]]
 
         # Replace the sum with its payout and find the average for each line
         for line in sum_payout:
