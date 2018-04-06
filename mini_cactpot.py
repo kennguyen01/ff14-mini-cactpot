@@ -1,8 +1,10 @@
-"""
-This program is written for the Mini Cactpot minigame in Final Fantasy 14 MMORPG.
+#!/usr/bin/env python3
 
-The game consists of a 3x3 scratch off ticket with 1 number given to the user. User can pick 3 additional numbers to
-fill in the matrix. For example:
+"""
+This program calculates the best payout for the Mini Cactpot minigame in Final Fantasy 14 MMORPG.
+
+The game consists of a 3x3 scratch off ticket with 1 number given to the user.
+User can pick 3 additional numbers to fill in the matrix. For example:
 
 4   5   6   7  8
 3 | 1 | 3 | x
@@ -10,9 +12,7 @@ fill in the matrix. For example:
 1 | x | x | 7
 
 Then user has to pick a 3-number lines. There are 3 rows, 3 columns, and 2 diagonals, making a total of 8 lines.
-Indcated by number 1-8 on the outside of the board. The payout for the game depends on the sum of numbers for that line.
-
-This program calculates the average of all possible payout for each of those lines.
+Indicated by number 1-8 on the board. The payout for the game depends on the sum of numbers for that line.
 """
 
 
@@ -25,16 +25,16 @@ class Color:
 
 class Game:
     """
-    This class works with graphical representation of the ticket, getting user inputs, and updating ticket.
+    Graphical representation of the ticket, getting user inputs, and updating ticket.
     """
     def __init__(self, ticket):
         self.ticket = ticket
 
-    def new_ticket(self):
+    def current_ticket(self):
         """
-        Return a display of the ticket.
+        Return a display of the ticket as joined strings.
 
-        Assumes that ticket is a dictionary with 9 letter keys from a-i for each position.
+        Assumes ticket is a dictionary with 9 key-value pairs from a-i for each position.
         """
         display = [
             '--------------',
@@ -46,54 +46,63 @@ class Game:
         ]
         return '\n'.join(display)
 
-    @classmethod
-    def user_numbers(cls):
+    @staticmethod
+    def user_numbers():
         """
-        Return dictionary of 4 key-value pairs of letter positions and user's numbers.
+        Ask for user's inputs and return inputs as dictionary of position-number
         """
+        print('Enter the 4 numbers you picked by its letter, then number.')
+        print(Color.UNDERLINE + 'For Example' + Color.END + ": enter 'a 1' if position a value is 1.\n")
         user_inputs = {}
-        for i in range(1, 5):
-            c, n = input('Number {}: '.format(i)).split()
-            user_inputs[c] = int(n)
+        while True:
+            try:
+                for counter in range(1, 5):
+                    letter, number = input('Number {}: '.format(counter)).split()
+                    user_inputs[letter] = int(number)
+            except ValueError:
+                print('Please enter your numbers in the indicated format')
+            finally:
+                if len(user_inputs) == 4:
+                    break
         return user_inputs
 
-    def fill_numbers(self, num):
+    def fill_ticket(self):
         """
-        Fill in numbers to ticket from dictionary of user's inputs
+        Replaces values in ticket based on user's numbers
         """
-        for k, v in num.items():
-            for c in self.ticket:
-                if c == k:
-                    self.ticket[c] = v
+        nums = self.user_numbers()
+        for key, value in nums.items():
+            if key in self.ticket:
+                self.ticket[key] = value
         return self.ticket
 
 
 class Calculate:
     """
-    This class deals with the positions for each 3-number line, calculating possible combinations of numbers, and
-    potential payout for each line
+    Calculates possible combinations of numbers, and best payout for ticket
     """
-    def __init__(self, positions):
-        self.positions = positions
+    def __init__(self, ticket):
+        self.ticket = ticket
+        self.nums_left = [x for x in range(1, 10) if x not in ticket.values()]
 
     def lines(self):
         """
-        Return each line's positions on ticket
+        Return dictionary of each line and its three positions on ticket
         """
-        ticket_lines = {
-            1: [self.positions['g'], self.positions['h'], self.positions['i']],
-            2: [self.positions['d'], self.positions['e'], self.positions['f']],
-            3: [self.positions['a'], self.positions['b'], self.positions['c']],
-            4: [self.positions['a'], self.positions['e'], self.positions['i']],
-            5: [self.positions['a'], self.positions['d'], self.positions['g']],
-            6: [self.positions['b'], self.positions['e'], self.positions['h']],
-            7: [self.positions['c'], self.positions['f'], self.positions['i']],
-            8: [self.positions['c'], self.positions['e'], self.positions['g']]
+        lines = {
+            1: [self.ticket['g'], self.ticket['h'], self.ticket['i']],
+            2: [self.ticket['d'], self.ticket['e'], self.ticket['f']],
+            3: [self.ticket['a'], self.ticket['b'], self.ticket['c']],
+            4: [self.ticket['a'], self.ticket['e'], self.ticket['i']],
+            5: [self.ticket['a'], self.ticket['d'], self.ticket['g']],
+            6: [self.ticket['b'], self.ticket['e'], self.ticket['h']],
+            7: [self.ticket['c'], self.ticket['f'], self.ticket['i']],
+            8: [self.ticket['c'], self.ticket['e'], self.ticket['g']]
         }
-        return ticket_lines
+        return lines
 
-    @classmethod
-    def combinations(cls, iterable, r):
+    @staticmethod
+    def combinations(iterable, r):
         """
         Return combinations of elements for iterable of length r with no repeating elements
         """
@@ -110,33 +119,33 @@ class Calculate:
             else:
                 return
             indices[i] += 1
-            for j in range(i+1, r):
-                indices[j] = indices[j-1] + 1
+            for j in range(i + 1, r):
+                indices[j] = indices[j - 1] + 1
             yield tuple(pool[i] for i in indices)
 
-    def lists_combinations(self, l1, l2):
+    def lists_combinations(self, l1):
         """
-        Find possible combinations of lines by replacing string with integer.
+        Find possible combinations of numbers by replacing string from l1 with numbers still available on ticket
         """
-        indices = [i for i, j in enumerate(l1) if isinstance(j, str)]
-
-        # Find all indices of letters in list 1 and replace them with outputs from list 2's combinations
-        for combo in self.combinations(l2, len(indices)):
+        indices = [i for i, x in enumerate(l1) if isinstance(x, str)]
+        combos = self.combinations(self.nums_left, len(indices))
+        for combo in combos:
             for index, char in zip(indices, combo):
-                list_1[index] = char
-            yield tuple(l2)
+                l1[index] = char
+            yield tuple(l1)
 
-    def lines_combinations(self, num_lines, num_list):
+    def lines_combinations(self):
         """
         Return dictionary of lists for all combinations for each line
         """
         lines_combo = {}
+        num_lines = self.lines()
         for line in num_lines:
-            lines_combo[line] = list(self.lists_combinations(num_lines[line], num_list))
+            lines_combo[line] = list(self.lists_combinations(num_lines[line]))
         return lines_combo
 
     @classmethod
-    def lines_payout(cls, comb):
+    def lines_payout(cls, combinations):
         """
         Return average of potential payout for each line
         """
@@ -145,9 +154,9 @@ class Calculate:
                   19: 36, 20: 306, 21: 1080, 22: 144, 23: 1800, 24: 3600}
 
         # Sum of each combination in list
-        sum_payout = dict()
-        for line in comb:
-            sum_payout[line] = [sum(combo) for combo in comb[line]]
+        sum_payout = {}
+        for line in combinations:
+            sum_payout[line] = [sum(combo) for combo in combinations[line]]
 
         # Replace the sum with its payout and find the average for each line
         for line in sum_payout:
@@ -159,7 +168,6 @@ class Calculate:
         """
         Recommend the highest payout line(s) to user
         """
-        print('---------------')
         highest = max(user_payout.values())
         recommend = [key for key, value in user_payout.items() if value == highest]
         string = ''
@@ -168,44 +176,30 @@ class Calculate:
         return string
 
 
-def cactpot():
+def main():
     print(Color.BOLD + 'Welcome to FFXIV Mini Cactpot Solver!\n' + Color.END)
     while True:
-        start = input('Start (yes/no): ').lower()
-        if start == 'yes':
-
-            # Ticket dictionary
+        start = input('Start (y/n): ').lower()
+        if start == 'y':
             ticket = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i'}
-            new_game = Game(ticket)
-            print(new_game.new_ticket())
-
-            print('Enter the 4 numbers you picked by its letter, then number.')
-            print(Color.UNDERLINE + 'For Example' + Color.END + ": enter 'a 1' if position a on ticket is 1.\n")
-
-            # Populate board with user numbers
-            numbers = new_game.user_numbers()
-            new_game.fill_numbers(numbers)
-
-            # List of numbers not on ticket
-            availables = [x for x in range(1, 10) if x not in ticket.values()]
-            calc = Calculate(ticket)
-
+            # Ask user for inputs and populate ticket
+            game = Game(ticket)
+            print(game.current_ticket())
+            game.fill_ticket()
             # Calculate combinations and potential payout
-            ticket_lines = calc.lines()
-            possibilities = calc.lines_combinations(ticket_lines, availables)
+            calc = Calculate(ticket)
+            possibilities = calc.lines_combinations()
             expected_value = calc.lines_payout(possibilities)
-
             # Recommend the highest payout line(s) for user
+            print(game.current_ticket())
             print(calc.recommendation(expected_value))
-
-        elif start == 'no':
-            print('Thank you for using the program.')
+        elif start == 'n':
+            print('Good bye')
             break
-
         else:
             print('Please enter yes or no.')
             continue
 
 
 if __name__ == "__main__":
-    cactpot()
+    main()
