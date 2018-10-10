@@ -1,18 +1,4 @@
 
-"""
-This program calculate the best payouts for the mini cactpot web app
-
-The ticket will be represented in this format:
-
-4   5   6   7  8
-3 | a | b | c
-2 | d | e | f
-1 | g | h | i
-
-Each number the user picked will correspond to letters a to i.
-The numbers 1-8 indicate the 3-number lines used to calculate payout.
-"""
-
 
 class Calculate:
     """
