@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <h4 class="text-center">Results:</h4>
+
+    {% for string in results.suggestion[1:] %}
+    <p class="text-center">
+        <strong>{{ string }}</strong>
+    </p>
+    {% endfor %}
+
+    <table class="text-center table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="5">Ticket</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                {% for i in range(4, 9) %}
+                    <td {% if i in keys %} class="table-success" {% endif %}>
+                        <strong>{{ results.payouts[i] }}</strong>
+                    </td>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <td {% if 3 in keys %} class="table-success" {% endif %}>
+                    <strong>{{ results.payouts[3] }}</strong>
+                </td>
+
+                {% for i in range(1, 4) %}
+                    <td {% if i in values %} class="table-success" {% endif %}>
+                        {{ inputs[i - 1] }}
+                    </td>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <td {% if 2 in keys %} class="table-success" {% endif %}>
+                    <strong>{{ results.payouts[2] }}</strong>
+                </td>
+
+                {% for i in range(4, 7) %}
+                    <td {% if i in values %} class="table-success" {% endif %}>
+                        {{ inputs[i - 1] }}
+                    </td>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <td {% if 1 in keys %} class="table-success" {% endif %}>
+                    <strong>{{ results.payouts[1] }}</strong>
+                </td>
+
+                {% for i in range(7, 10) %}
+                    <td {% if i in values %} class="table-success" {% endif %}>
+                        {{ inputs[i - 1] }}
+                    </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <form action="/">
+        <div class="text-center">
+            <button class="btn btn-outline-success btn-lg" type="submit">New Ticket</button>
+        </div>
+    </form>
+{% endblock %}

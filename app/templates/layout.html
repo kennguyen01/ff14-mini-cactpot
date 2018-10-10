@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/static/styles.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+
+        <title>FFXIV Mini Cactpot Calculator</title>
+    </head>
+
+    <body>
+
+        <div class="container-fluid card-header text-center">
+            <h3>Mini Cactpot Calculator</h3>
+        </div>
+
+        <main class="container">
+            <div class="extra-pad card">
+                {% block main %}{% endblock %}
+            </div>
+        </main>
+
+        <div class="container-fluid text-center">
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan="11">Ticket Payout</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <th scope="row">Sums</th>
+
+                        {% for i in range(6, 16) %}
+                        <td class="font-weight-bold">{{ i }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Payout</td>
+
+                        {% for j in payout[:10] %}
+                        <td>{{ j }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+
+                <tbody>
+                    <tr>
+                        <th scope="row">Sums</th>
+
+                        {% for i in range(16, 25) %}
+                        <td class="font-weight-bold">{{ i }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Payout</th>
+
+                        {% for j in payout[10:] %}
+                        <td>{{ j }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="small text-center text-muted">
+            FINAL FANTASY XIV is a registered trademark of Square Enix Holdings Co., Ltd.
+        </footer>
+    </body>
+</html>

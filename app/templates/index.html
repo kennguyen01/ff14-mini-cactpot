@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <p class="text-center">
+        <strong>Instruction</strong>: Select four unique numbers on the ticket and click Calculate. Any error will refresh the page.
+    </p>
+    <form action="/result" method="post">
+        <table class="text-center table table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="5">Ticket</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    {% for i in range(4, 9) %}
+                    <td><strong>{{ i }}</strong></td>
+                    {% endfor %}
+                </tr>
+
+                {% for i in range(3, 0, -1) %}
+                <tr>
+                    <td><strong>{{ i }}</strong></td>
+
+                    {% for j in range(3) %}
+                    <td>
+                        <div class="form-group">
+
+                            <select id="select_table" name="user_inputs" class="selectpicker form-control form-control-sm text-center">
+                                <option selected="selected">0</option>
+
+                                {% for k in range(1, 10) %}
+                                <option>{{ k }}</option>
+
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                    </td>
+                    {% endfor %}
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <button class="btn btn-outline-primary btn-lg" type="submit">Calculate</button>
+        </div>
+    </form>
+{% endblock %}
