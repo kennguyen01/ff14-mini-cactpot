@@ -1,7 +1,7 @@
 # FF14 Mini Cactpot Calculator
 A brute force calculator for the Mini Cactpot game in Final Fantasy 14
 
-Link to web app: <a href="https://kingle.pythonanywhere.com/mini-cactpot">Mini Cactpot Calculator</a>
+Link to web app: <a href="http://minicactpot.ml/">Mini Cactpot Calculator</a>
 
 This program calculates the best payout by enumerating all possible combinations for each 3-number line. The game consists of a 3x3 scratch off ticket with 1 number given to the user. User picks 3 additional numbers to fill in the ticket. The numbers 1-8 indicate the 3-number lines used to calculate payout.
 
