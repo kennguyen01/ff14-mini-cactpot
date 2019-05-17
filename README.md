@@ -1,4 +1,4 @@
-# FF14 Mini Cactpot Calculator
+# FF14 Mini Cactpot Flask App
 A brute force calculator for the [Mini Cactpot](https://na.finalfantasyxiv.com/lodestone/playguide/contentsguide/goldsaucer/cactpot/#anchor_002) game in Final Fantasy 14
 
 Link to web app: [Mini Cactpot Calculator](https://kingle.pythonanywhere.com/mini-cactpot)
