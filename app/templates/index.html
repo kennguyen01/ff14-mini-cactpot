@@ -4,7 +4,9 @@
     <p class="text-center">
         <strong>Instruction</strong>: Select four unique numbers on the ticket and click Calculate. Any error will refresh the page.
     </p>
-    <form action="/result" method="post">
+
+    <!-- Form receives inputs and send data to result function -->
+    <form action="/mini-cactpot/result" method="post">
         <table class="text-center table table-bordered">
             <thead>
                 <tr>
@@ -24,16 +26,17 @@
                 <tr>
                     <td><strong>{{ i }}</strong></td>
 
+                    <!-- Create 3 cells per row -->
                     {% for j in range(3) %}
                     <td>
                         <div class="form-group">
 
+                            <!-- Drop down menu number 1 to 9 for each cell -->
                             <select id="select_table" name="user_inputs" class="selectpicker form-control form-control-sm text-center">
                                 <option selected="selected">0</option>
 
                                 {% for k in range(1, 10) %}
                                 <option>{{ k }}</option>
-
                                 {% endfor %}
                             </select>
 

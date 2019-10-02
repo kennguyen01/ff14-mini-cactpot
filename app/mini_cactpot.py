@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 
 class Calculate:
@@ -34,7 +35,7 @@ class Calculate:
         """
         Return combinations of elements for iterable of length r with no repeating elements
 
-        Note: built in function from itertools, using inside class to avoid import
+        Built-in function from itertools, use as static method to avoid import
         https://docs.python.org/2/library/itertools.html#itertools.combinations
         """
         pool = tuple(iterable)
@@ -56,7 +57,7 @@ class Calculate:
 
     def lists_combinations(self, ticket_lines):
         """
-        Find possible combinations of numbers by replacing string from ticket_lines with numbers still available on ticket
+        Find possible combinations of numbers by replacing string from ticket_lines with numbers still available
         """
         indices = [i for i, x in enumerate(ticket_lines) if isinstance(x, str)]
         combos = self.combinations(self.nums_left, len(indices))
@@ -130,40 +131,46 @@ class Calculate:
         return best
 
 
-def fill_ticket(numbers_list):
+class Result:
     """
-    Create a dictionary of letter position and numbers
+    Get inputs from user and produce final results using Calculate class
     """
+    def __init__(self, user_inputs):
+        self.ticket = self.fill_ticket(user_inputs)
 
-    # letter position on ticket
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    @staticmethod
+    def fill_ticket(inputs):
+        """
+        Takes in a list of numbers
+        Return a dictionary of letters mapped to numbers/letters
+        """
+        # Letter position on ticket
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
-    # assign each number to letter if not 0
-    ticket = {letter: (number if number else letter) for letter, number in zip(letters, numbers_list)}
+        ticket = {}
+        # Assign input numbers to letters if not zero
+        for letter, number in zip(letters, inputs):
+            if number:
+                ticket[letter] = number
+            else:
+                ticket[letter] = letter
+        return ticket
 
-    return ticket
+    def calculate(self):
+        """
+        Return dictionary of expected payout and recommendation for best line to choose
+        """
+        # Calculate combinations and potential payout
+        calc = Calculate(self.ticket)
+        possibilities = calc.lines_combinations()
+        expected_value = calc.lines_payout(possibilities)
 
+        # Recommend the highest payout line(s) to user
+        recommendation = calc.recommendation(expected_value)
 
-def calculate(user_inputs):
-    """
-    Return a dictionary of all
-    """
-
-    # Fill empty ticket with user inputs
-    ticket = fill_ticket(user_inputs)
-
-    # Calculate combinations and potential payout
-    calc = Calculate(ticket)
-    possibilities = calc.lines_combinations()
-    expected_value = calc.lines_payout(possibilities)
-
-    # Recommend the highest payout line(s) to user
-    recommendation = calc.recommendation(expected_value)
-
-    # Dictionary of results
-    results = {
-        "payouts": expected_value,
-        "suggestion": recommendation
-    }
-
-    return results
+        # Dictionary of results
+        results = {
+            "payouts": expected_value,
+            "suggestion": recommendation
+        }
+        return results

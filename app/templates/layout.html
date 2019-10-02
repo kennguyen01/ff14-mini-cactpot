@@ -16,12 +16,14 @@
             <h3>Mini Cactpot Calculator</h3>
         </div>
 
+        <!-- Block contains ticket input -->
         <main class="container">
             <div class="extra-pad card">
                 {% block main %}{% endblock %}
             </div>
         </main>
 
+        <!-- Table of payout values for ticket -->
         <div class="container-fluid text-center">
             <table class="table table-bordered table-sm">
                 <thead>
@@ -30,6 +32,7 @@
                     </tr>
                 </thead>
 
+                <!-- First row payout from sum of 6 to 15 -->
                 <tbody>
                     <tr>
                         <th scope="row">Sums</th>
@@ -39,7 +42,7 @@
                         {% endfor %}
                     </tr>
                     <tr>
-                        <th scope="row">Payout</td>
+                        <th scope="row">Payout</th>
 
                         {% for j in payout[:10] %}
                         <td>{{ j }}</td>
@@ -47,6 +50,7 @@
                     </tr>
                 </tbody>
 
+                <!-- Second row payout from sum 16 to 24 -->
                 <tbody>
                     <tr>
                         <th scope="row">Sums</th>

@@ -17,12 +17,13 @@
             </tr>
         </thead>
 
+        <!-- Change class of elements to table-success if it contains highest payout -->
         <tbody>
             <tr>
                 {% for i in range(4, 9) %}
-                    <td {% if i in keys %} class="table-success" {% endif %}>
-                        <strong>{{ results.payouts[i] }}</strong>
-                    </td>
+                <td {% if i in keys %} class="table-success" {% endif %}>
+                    <strong>{{ results.payouts[i] }}</strong>
+                </td>
                 {% endfor %}
             </tr>
 
@@ -32,9 +33,9 @@
                 </td>
 
                 {% for i in range(1, 4) %}
-                    <td {% if i in values %} class="table-success" {% endif %}>
-                        {{ inputs[i - 1] }}
-                    </td>
+                <td {% if i in values %} class="table-success" {% endif %}>
+                    {{ inputs[i - 1] }}
+                </td>
                 {% endfor %}
             </tr>
 
@@ -44,9 +45,9 @@
                 </td>
 
                 {% for i in range(4, 7) %}
-                    <td {% if i in values %} class="table-success" {% endif %}>
-                        {{ inputs[i - 1] }}
-                    </td>
+                <td {% if i in values %} class="table-success" {% endif %}>
+                    {{ inputs[i - 1] }}
+                </td>
                 {% endfor %}
             </tr>
 
@@ -56,15 +57,15 @@
                 </td>
 
                 {% for i in range(7, 10) %}
-                    <td {% if i in values %} class="table-success" {% endif %}>
-                        {{ inputs[i - 1] }}
-                    </td>
+                <td {% if i in values %} class="table-success" {% endif %}>
+                    {{ inputs[i - 1] }}
+                </td>
                 {% endfor %}
             </tr>
         </tbody>
     </table>
 
-    <form action="/">
+    <form action="/mini-cactpot">
         <div class="text-center">
             <button class="btn btn-outline-success btn-lg" type="submit">New Ticket</button>
         </div>
