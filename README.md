@@ -29,7 +29,7 @@ Clone repo and install all dependencies. Then `cd` to the app directory and ente
 
 ```console
 $ export FLASK_APP=application.py FLASK_DEBUG=1
-flask run
+$ flask run
 ```
 
 The app will now be deployed locally on [http://127.0.0.1:5000/](http://127.0.0.1:5000/). The `FLASK_DEBUG=1` flag lets the app reload automatically after changes to the code.
